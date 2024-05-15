@@ -6,13 +6,15 @@ I followed [fireship](https://github.com/fireship-io)'s [Assembly Language in 10
 ## To compile the code
 
 ```sh
-nasm -felt64 script.asm # Convert the code to an object
+nasm -f elf64 script.asm # Convert the code to an object
+```
+
+**Do note that this has only worked for Linux (I used WSL and Fedora VM).** If anybody got any methods to compile the object file to Windows, please contact me.
+
+```sh
+ld script.o -o script # Convert the object to an executable
 ```
 
 ```sh
-ld app.o -o app # Convert the object to an executable
-```
-
-```sh
-./app # Run the executable
+./script # Run the executable
 ```

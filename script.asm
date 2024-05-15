@@ -9,7 +9,7 @@ section .data
     helloLen: equ $-hello       ; length of string
 
 section .text
-    global_start        ; entry level for code
+    global _start        ; entry level for code
 
     _start:     ; program starts here
         ;instructions       ;operand
