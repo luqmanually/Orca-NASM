@@ -5,7 +5,7 @@ section .bss
 
 section .data
     ;contants
-    hello: db "Hi Mom", 10      ; string to print, by itself does nothing
+    hello: db "Heyy, Mommy..!, 10      ; string to print, by itself does nothing
     helloLen: equ $-hello       ; length of string
 
 section .text
