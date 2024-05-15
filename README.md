@@ -1,9 +1,11 @@
-# "Orca" Netwide Assembler project (Orca-NASM)
+# Project "Orca" using Netwide Assembler(Orca-NASM)
 
 My first x86 Assembly project. The assembler I used is [NASM](https://www.nasm.us/) (Netwide Assembler).
 I followed [fireship](https://github.com/fireship-io)'s [Assembly Language in 100 seconds](https://www.youtube.com/watch?v=4gwYkEK0gOk) video to get started.
 
 ## What this script does
+
+More coming soon.
 
 - Prints out "Hey, Mommy..!"
 - Counts till 69
