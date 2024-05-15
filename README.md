@@ -3,6 +3,12 @@
 My first x86 Assembly project. The assembler I used is [NASM](https://www.nasm.us/).
 I followed [fireship](https://github.com/fireship-io)'s [Assembly Language in 100 seconds](https://www.youtube.com/watch?v=4gwYkEK0gOk) video to get started.
 
+## What this script does
+
+- Prints out "Hey, Mommy..!"
+- Counts till 69
+- Prints out "Mommy look, I counted till 69!"
+
 ## To compile the code
 
 ```sh
