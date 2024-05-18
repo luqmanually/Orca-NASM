@@ -1,15 +1,13 @@
 # Project "Orca" using Netwide Assembler (Orca-NASM)
 
-My first x86 Assembly project. The assembler I used is [NASM](https://www.nasm.us/) (Netwide Assembler).
-I followed [fireship](https://github.com/fireship-io)'s [Assembly Language in 100 seconds](https://www.youtube.com/watch?v=4gwYkEK0gOk) video to get started.
+My first Assembly project. Please note that this script is written in **x86 64-bit Assembly**, for an Intel processor (should work fine on other x86 processors), assembled using [NASM](https://www.nasm.us/).
 
 ## What this script does
 
-More coming soon.
-
-- Prints out "Hey, Mommy..!"
-- Counts till 69
-- Prints out "Mommy look, I counted till 69!"
+- Prints out things
+- Accepts user inputs
+- Skid around in loops
+- Run subroutines
 
 ## To run the code
 

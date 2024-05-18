@@ -1,10 +1,14 @@
 section .data
     message_intro: dd "Organic NASM-based project - Orca-NASM"
     message_commands: dd "<calc> to use calculator. | <exit> to exit."
-    message_yes: dd "Yes", 10
+    message_yes: dd "yes", 10
+
+    message_exit: dd "Exiting program..."
+    message_help: dd "I can't help you out."
 
     newline: db 10 ; Newline
-    exit_command: db "exit"
+    exit_command: dd "exit", 10
+    help_command: dd "help", 10
 
 section .bss
     input: resb 16
@@ -18,18 +22,38 @@ section .text
 
 _start:
     ; start of code
-    mov rax, message_intro
+    mov rax, message_intro ; intro text
     call _console_out
+    call _console_space
 
-    mov rax, message_commands
+    mov rax, message_commands ; list down commands
     call _console_out
+    call _console_space
 
-    call _console_get ; get input from console
+    loop: ; main program loop
+        call _console_get ; get input from console
 
-    mov rax, input
-    call _console_out
+        mov rax, [input]
+        _command_exit: ; exit command
+            mov rbx, [exit_command]
+            cmp rax, rbx
+            je end
+        
+        _command_help: ; help command
+            mov rbx, [help_command]
+            cmp rax, rbx
+            
+            mov rax, message_help
+            call _console_out
+            call _console_space
 
-    call _exit ; exit
+        jmp loop ; repeat until exit
+
+    end: ; end label
+        mov rax, message_exit
+        call _console_out
+
+        call _exit ; exit
 
 _console_out:
     ; subroutine to print out the message stored in rax
@@ -49,15 +73,16 @@ _console_out:
     pop rsi ; retrive original memory address from stack into rsi
     mov rdx, rbx ; length of message to print
     syscall
- 
-    ; print out new line
+    ret ; return to code/end of subroutine
+
+_console_space:
+    ; subroutine to print out new line
     mov rax, 1
     mov rdi, 1
     mov rsi, newline
     mov rdx, 1
     syscall
-
-    ret ; return to code/end of subroutine
+    ret ; end of subroutine
 
 _console_get:
     ; subroutine that fetches input
@@ -66,11 +91,11 @@ _console_get:
     mov rsi, input ; rbx is where the input will be stored
     mov rdx, 256 ; 256 bytes allocation
     syscall
-    ret
+    ret ; end of subroutine
 
 _exit:
     ; subroutine to quit code. required, otherwise segmentation fault.
     mov rax, 60
     mov rdi, 0
     syscall
-    ret
+    ret ; end of subroutine
