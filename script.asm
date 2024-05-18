@@ -4,9 +4,10 @@ section .data
     message_yes: dd "Yes", 10
 
     newline: db 10 ; Newline
+    exit_command: db "exit"
 
 section .bss
-    command: resb 16
+    input: resb 16
     operator: resb 8
     firstNum: resb 8
     secondNum: resb 8
@@ -23,19 +24,24 @@ _start:
     mov rax, message_commands
     call _console_out
 
+    call _console_get ; get input from console
+
+    mov rax, input
+    call _console_out
+
     call _exit ; exit
 
 _console_out:
     ; subroutine to print out the message stored in rax
     push rax
     mov rbx, 0
-    loop:
+    message_len_loop:
         ; increase pointer for the message and count
         inc rax
         inc rbx
         mov cl, [rax] ; load byte to memory address
         cmp cl, 0 ; check for null terminator
-    jne loop
+    jne message_len_loop
  
     ; print out message
     mov rax, 1
@@ -53,11 +59,11 @@ _console_out:
 
     ret ; return to code/end of subroutine
 
-_get:
+_console_get:
     ; subroutine that fetches input
     mov rax, 0
     mov rdi, 0
-    mov rsi, rax ; rbx is where the input will be stored
+    mov rsi, input ; rbx is where the input will be stored
     mov rdx, 256 ; 256 bytes allocation
     syscall
     ret
