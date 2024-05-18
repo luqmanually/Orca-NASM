@@ -3,6 +3,9 @@ section .data
     message_commands: dd "<calc> to use calculator. | <exit> to exit."
     message_yes: dd "yes", 10
 
+    text_console: dd ">- "
+    text_404: dd "Command does not exist!"
+
     message_exit: dd "Exiting program..."
     message_help: dd "I can't help you out."
 
@@ -31,27 +34,39 @@ _start:
     call _console_space
 
     loop: ; main program loop
+        mov rax, text_console
+        call _console_out
+
         call _console_get ; get input from console
 
         mov rax, [input]
-        _command_exit: ; exit command
+        _input_exit: ; exit command
             mov rbx, [exit_command]
             cmp rax, rbx
             je end
         
-        _command_help: ; help command
+        _input_help: ; help command
             mov rbx, [help_command]
             cmp rax, rbx
-            
-            mov rax, message_help
-            call _console_out
-            call _console_space
+            je command_help
+        
+        mov rax, text_404
+        call _console_out
+        call _console_space ; repeat until exit
 
-        jmp loop ; repeat until exit
+        jmp loop
+        
+    command_help:
+        mov rax, message_help
+        call _console_out
+        call _console_space
+
+    jmp loop
 
     end: ; end label
         mov rax, message_exit
         call _console_out
+        call _console_space
 
         call _exit ; exit
 
