@@ -3,8 +3,20 @@ section .data
     message_commands: dd "<calc> to use calculator. | <exit> to exit."
     message_yes: dd "yes", 10
 
+    ; some texts for the console
     text_console: dd ">- "
     text_404: dd "Command does not exist!"
+
+    ; calculator
+    calculator_enter_num1: dd "Enter first number"
+    calculator_enter_num2: dd "Enter second number"
+    calculator_enter_operation: dd "Enter operation =,-,/,*"
+    calculator_result: dd "Answer: "
+
+    calculator_add: dd "+"
+    calculator_sub: dd "-"
+    calculator_div: dd "/"
+    calculator_mul: dd "*"
 
     message_exit: dd "Exiting program..."
     message_help: dd "I can't help you out."
@@ -15,10 +27,11 @@ section .data
 
 section .bss
     input: resb 16
-    operator: resb 8
-    firstNum: resb 8
-    secondNum: resb 8
-    messageLen: resb 64
+
+    ; calculator data
+    calculator_num1: resb 8
+    calculator_num2: resb 8
+    calculator_ans: resb 16
 
 section .text
     global _start
@@ -55,13 +68,55 @@ _start:
         call _console_space ; repeat until exit
 
         jmp loop
-        
+
     command_help:
         mov rax, message_help
         call _console_out
         call _console_space
 
     jmp loop
+
+    command_calculator:
+        mov rax, calculator_enter_num1 ; enter first number
+        call _console_out
+        call _console_space
+
+        call _console_get
+        mov calculator_num1, input ; store input to num1
+
+        mov rax, calculator_enter_num2 ; enter second number
+        call _console_out
+        call _console_space
+
+        call _console_get
+        mov calculator_enter_num2, input ; store input to num2
+
+        mov rax, calculator_enter_operation ; enter operation
+        call _console_out
+        call _console_space
+
+        mov rax, [calculator_enter_operation] ; check for operation
+        _input_addition:
+            mov rbx, [calculator_add]
+            cmp rax, rbx
+            je operation_addition ; jump to addition label
+
+        _input_subtraction:
+            mov rbx, [calculator_sub]
+            cmp rax, rbx
+        
+        _input_division:
+            mov rbx, [calculator_div]
+            cmp rax, rbx
+        
+        _input_multiplication:
+            mov rbx, [calculator_mul]
+            cmp rax, rbx
+
+        operation_addition:
+            mov calculator_result, [calculator_num1]
+            add calculator_result, [calculator_num2]
+
 
     end: ; end label
         mov rax, message_exit
