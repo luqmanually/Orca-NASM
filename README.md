@@ -1,26 +1,57 @@
-# Project "Orca" using Netwide Assembler (Orca-NASM)
+# Project Orca NASM-based (Orca-NASM)
 
-My first Assembly project. Please note that this script is written in **x86 64-bit Assembly**, for an Intel processor (should work fine on other x86 processors), assembled using [NASM](https://www.nasm.us/).
+**Assembled using the [NASM](https://nasm.us) assembler, x86 64-bit.**
 
-## What this script does
+## Overview
 
-- Prints out things
-- Accepts user inputs
-- Skid around in loops
-- Run subroutines
+A multi-purpose, CLI-based program I made for fun, and to get myself used to coding in the Assembly language. 
 
-## To run the code
+## Available functions
 
-```sh
-nasm -f elf64 script.asm # Convert the code to an object
+I cannot guarantee that all the listed functions work as intended whilst you are reading this `READM.md`. This project is being worked on bit by bit from time to time, and the commits I made are not necessarily containing 100% fully working code.
+
+### `calc`
+
+Basic calculator. Does the basic 4 arithmetic operations, **addition**, **subtraction**, **multiplication** and **division**.
+
+### `help`
+
+Displays the commands, and some basic tips.
+
+### `exit`
+
+Exits the program (the proper way). Another way is via `CTRL+C`.
+
+## How do I run this script?
+
+You will need the [NASM](https://nasm.us) assembler installed, on your system and PATH.
+
+### Assemble `script.asm` to `script.o`
+
+Run the following command on your terminal:
+
+```bash
+nasm -f elf64 script.asm
 ```
 
-**Do note that this has only worked for Linux (I used WSL and Fedora VM).** If anybody got any methods to compile the object file to Windows, please contact me (links on my [profile](https://github.com/luqmanually)).
+This will output an object file (`script.o`)
 
-```sh
-ld script.o -o script # Convert the object to an executable
+### Convert `script.o` to `script`
+
+In order to run the script, you have to do this one last conversion. Run the following command:
+
+```bash
+ld script.o -o script
 ```
 
-```sh
-./script # Run the executable
+### Run the `script`
+
+You can now run the script. Go to the file location of `script`, and run the following:
+
+```bash
+./script
 ```
+
+## Feedbacks/Suggestions
+
+If you have any feedbacks or suggestions, please contact me (all the links are available on my [profile](https://github.com/luqmanually))
