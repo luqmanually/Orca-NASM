@@ -10,7 +10,7 @@ section .data
     ; calculator
     calculator_enter_num1: dd "Enter the first number: ", 10
     calculator_enter_num2: dd "Enter the second number: ", 10
-    calculator_enter_operation: dd "Enter your operation <+,-,*,/>"
+    calculator_enter_operation: dd "Enter your operation <+,-,*,/>", 10
 
     calculator_operation_add: dd "+"
     calculator_operation_sub: dd "-"
@@ -30,7 +30,7 @@ section .data
     calc_command: dd "calc", 10
 
 section .bss
-    input: resb 16
+    input: resb 32
 
     ; calculator data
     calculator_num1: resb 8
@@ -95,17 +95,56 @@ _start: ; start of code
 
     ; calculator
     command_calculator:
+        ; enter number 1
         mov rax, calculator_enter_num1
         call _console_out
 
         call _console_get
-        mov rax, input
+        mov rax, [input]
         mov [calculator_num1], rax
 
-        mov rax, calculator_num1
+        ; enter number 2
+        mov rax, calculator_enter_num2
+        call _console_out
+        call _console_space
+
+        call _console_get
+        mov rax, [input]
+        mov [calculator_num2], rax
+
+        ; enter operation
+        mov rax, calculator_enter_operation
         call _console_out
 
-        jmp loop
+        call _console_get
+        mov rax, [input]
+        
+        ; convert calculator_num1 to integer
+        mov rax, [calculator_num1]
+        call _atoi
+        mov [calculator_num1], rax
+
+        ; convert calculator_num2 to integer
+        mov rax, [calculator_num2]
+        call _atoi
+        mov [calculator_num2], rax
+
+        ; jump to operations
+        cmp rax, calculator_operation_add
+        je _calculator_addition
+
+        _calculator_addition:
+            mov rax, [calculator_num1]
+            mov rbx, [calculator_num2]
+
+            add rax, rbx
+
+            mov [calculator_ans], rax
+
+            mov rax, calculator_num1
+            call _console_out
+
+            jmp loop
 
     ; end script
     command_end:
@@ -146,6 +185,12 @@ _console_space:
 
 _console_get:
     ; subroutine that fetches input
+
+    ; clearing out input
+    mov rax, 0
+    mov [input], rax
+
+    ; system call for terminal input
     mov rax, 0
     mov rdi, 0
     mov rsi, input ; rbx is where the input will be stored
