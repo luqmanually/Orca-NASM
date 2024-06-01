@@ -101,7 +101,10 @@ _start: ; start of code
 
         call _console_get
         mov rax, [input]
-        mov [calculator_num1], rax
+
+        ; convert calculator_num1 to integer
+        call convert_to_int
+        mov [calculator_num1], rsi
 
         ; enter number 2
         mov rax, calculator_enter_num2
@@ -110,7 +113,10 @@ _start: ; start of code
 
         call _console_get
         mov rax, [input]
-        mov [calculator_num2], rax
+
+        ; convert calculator_num2 to integer
+        call convert_to_int
+        mov [calculator_num2], rsi
 
         ; enter operation
         mov rax, calculator_enter_operation
@@ -118,16 +124,6 @@ _start: ; start of code
 
         call _console_get
         mov rax, [input]
-        
-        ; convert calculator_num1 to integer
-        mov rax, [calculator_num1]
-        call _atoi
-        mov [calculator_num1], rax
-
-        ; convert calculator_num2 to integer
-        mov rax, [calculator_num2]
-        call _atoi
-        mov [calculator_num2], rax
 
         ; jump to operations
         cmp rax, calculator_operation_add
@@ -197,6 +193,23 @@ _console_get:
     mov rdx, 256 ; 256 bytes allocation
     syscall
     ret ; end of subroutine
+
+convert_to_int:
+    xor rsi, rsi          ; Clear RSI
+    xor rcx, rcx          ; Clear RCX
+
+convert_to_int_loop:
+    movzx rdx, byte [rsi] ; Load byte into RDX
+    cmp rdx, 0            ; Check for null terminator
+    je convert_to_int_done
+
+    sub rdx, '0'          ; Convert ASCII to integer
+    imul rsi, 10          ; Multiply by 10
+    add rsi, rdx          ; Add current digit
+    jmp convert_to_int_loop
+
+convert_to_int_done:
+    ret
 
 _exit:
     ; subroutine to quit code. required, otherwise segmentation fault.
